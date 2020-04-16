@@ -17,9 +17,9 @@ class crawl:
     def create_chrome_session(self):
         print("Chrome Sitzung wird vorbereitet...")
         options = webdriver.ChromeOptions()
-        #options.add_argument('headless')
-        #options.add_argument("disable-gpu")
-        #options.add_argument("--log-level=3")
+        options.add_argument('headless')
+        options.add_argument("disable-gpu")
+        options.add_argument("--log-level=3")
         
         try:
             print("Chrome Sitzung wird geöffnet...")
@@ -35,7 +35,7 @@ class crawl:
         self.browser.find_element_by_name('username').send_keys(self.username)
         self.browser.find_element_by_name('password').send_keys(self.password)
         self.browser.find_element_by_name('password').send_keys(Keys.ENTER)
-        sleep(3)
+        sleep(6)
         
         try:
             self.browser.find_element_by_xpath("(//div[@class='_47KiJ'])")
@@ -65,25 +65,40 @@ class crawl:
             if i != ".":
                 num_articels = num_articels + i
 
-        articels = int(num_articels)
+        articels = int(num_articels) + 1
 
         found = []
-
-        for i in range(articels):
+        iterat = 1
+        i = 1
+        
+        while i != articels:
             
             try:
-                found.append(self.browser.find_element_by_xpath("(//img[@class='FFVAD'])[" + str(i+1) + "]"))
-                print(i+1, " from", articels)
+                
+                tag = self.browser.find_element_by_xpath("(//img[@class='FFVAD'])[" + str(iterat) + "]").get_attribute('src')
+                if tag not in found:
+                    
+                    found.append(tag)
+                    print("[", i, " /", articels - 1, "]")
+                    
+                else:
+                    i = i - 1
                 
             except:
-                print("Scroll...")
                 self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 sleep(3)
+                iterat = 0
+                i = i - 1
+                
+            iterat = iterat + 1
+            i = i + 1
             
+        counter = 0
         for k in found:
-            print(k.get_attribute('src'))
+            counter = counter + 1
+            print(counter, k)
             print("\n")
 
-c = crawl('____.me._', 'Florian1', 'https://instagram.com/yamondai')
+c = crawl('USERNAME', 'PASSWORD', 'https://instagram.com/ACCOUNTNAME')
 c.get_post()
 quit()
