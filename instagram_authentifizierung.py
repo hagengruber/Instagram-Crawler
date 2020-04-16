@@ -22,9 +22,9 @@ class crawl:
         
     def create_chrome_session(self):
         options = webdriver.ChromeOptions()
-        options.add_argument('headless')
-        options.add_argument("disable-gpu")
-        options.add_argument("--log-level=3")
+        #options.add_argument('headless')
+        #options.add_argument("disable-gpu")
+        #options.add_argument("--log-level=3")
         
         try:
             print("Chrome Sitzung wird geöffnet...")
@@ -140,6 +140,6 @@ class crawl:
 
 
 
-c = crawl('____.me._', 'Florian1', 'https://instagram.com/ACCOUNTNAME')
+c = crawl('Username', 'Password', 'https://instagram.com/ACCOUNTNAME')
 c.get_post()
 quit()
