@@ -8,14 +8,19 @@ class crawl:
         self.password = password
         self.account = account
 
+
+
+
     def get_post(self):
         self.create_chrome_session()
         self.login()
         self.get_site()
         self.get_posts()
         
+        
+        
+        
     def create_chrome_session(self):
-        print("Chrome Sitzung wird vorbereitet...")
         options = webdriver.ChromeOptions()
         options.add_argument('headless')
         options.add_argument("disable-gpu")
@@ -28,6 +33,9 @@ class crawl:
             print("\nDer Google Chrome Treiber wurde nicht gefunden...\nDownloade den zu passenden Treiber und verschiebe ihn mit dem Namen 'chromedriver.exe' in das aktuelle Verzeichnis")
             quit()
             
+            
+            
+            
     def login(self):
         print('Login wird versucht...')
         self.browser.get('https://www.instagram.com/accounts/login/')
@@ -35,22 +43,52 @@ class crawl:
         self.browser.find_element_by_name('username').send_keys(self.username)
         self.browser.find_element_by_name('password').send_keys(self.password)
         self.browser.find_element_by_name('password').send_keys(Keys.ENTER)
-        sleep(6)
         
-        try:
-            self.browser.find_element_by_xpath("(//div[@class='_47KiJ'])")
-        except:
-            print("\nBenutzername oder Passwort waren nicht korrekt...")
+        erg = 0
+        
+        while erg == 0:
+            erg = self.get_login_error()
+            if erg == 0:
+                erg = self.get_login_succ()
+        
+        if erg == 1:
+            print('Benutzername oder Passwort waren falsch...')
             quit()
             
-        print('Login erfolgreich')
-            
+        print("Anmeldung erfolgreich")
+        
+        
+        
+        
+    def get_login_error(self):
+        try:
+            self.browser.find_element_by_xpath("(//p[@id='slfErrorAlert'])")
+            return 1
+        except:
+            return 0
+    
+    
+    
+    
+    def get_login_succ(self):
+        try:
+            self.browser.find_element_by_xpath("(//div[@class='_47KiJ'])")
+            return 2
+        except:
+            return 0
+    
+    
+    
+    
     def get_site(self):
         try:
             print("'", self.account, "' wird gesucht...")
             self.browser.get(self.account)
         except:
             print("\nEs scheint so, als ob '", self.account, "' keine gültige Instagram-Adresse sei\nBitte verwende folgenden Pattern: https://instagram.com/USERNAME")
+
+
+
 
     def get_posts(self):
         try:
@@ -99,6 +137,9 @@ class crawl:
             print(counter, k)
             print("\n")
 
-c = crawl('USERNAME', 'PASSWORD', 'https://instagram.com/ACCOUNTNAME')
+
+
+
+c = crawl('____.me._', 'Florian1', 'https://instagram.com/ACCOUNTNAME')
 c.get_post()
 quit()
