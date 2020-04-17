@@ -225,7 +225,7 @@ class crawl:
             i = i + 1
         
     def get_articels(self):
-        # Die Anzahl der Artikel wird ermittelt
+        # Die Anzahl der Artikel wird ermittelt 
         
         # In diesem Tag steht die Anzahl der Artikel
         articels = self.browser.find_element_by_xpath("(//span[@class='g47SY '])").get_attribute('innerHTML')
