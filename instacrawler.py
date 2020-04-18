@@ -180,8 +180,14 @@ class crawl:
         # i ist der Zähler
         i = 1
         
-        # Ordner wird erstellt
-        os.mkdir(self.name)
+        try:
+            # Ordner wird erstellt
+            os.mkdir(self.name)
+        except FileExistsError:
+            print("Der Ordner '" + self.name + "' existiert schon...")
+            answer = input("Sollen Daten gelöscht werden [J/N]? ")
+            if not answer == "J":
+                quit()
         
         print("\nDownload Files...\n")
        
@@ -217,7 +223,7 @@ class crawl:
                     print("#                                             #")
                     print(self.p_header(self.name))
                     print("#                                             #")
-                    print("#            " + self.follower + "         " + self.following + "          ")
+                    print("# Beiträge:", self.articels-1, " " + self.follower + " Abonnenten " + self.following + " Abonniert")
                     print("#                                             #")
                     print("###############################################")
                     print("#                                             #")

@@ -16,7 +16,8 @@ Der Crawler benötigt...
 				
 <p> Kopiere die Datei 'instagram-crawler.py' und den passenden <a href="https://chromedriver.chromium.org/downloads" target="_blank">Google Chrome Treiber</a> in ein beliebiges Verzeichnis </p>
 <p> Erstelle wie folgt ein Objekt und rufe danach die Funktion 'get_post()' auf </p>
-					
+
+<code> from instacrawler import crawl </code> <br>					
 <code> c = crawl('USERNAME', 'PASSWORD', 'https://www.instagram.com/ACCOUNTNAME') </code> <br>
 <code> c.get_post() </code>
 					
