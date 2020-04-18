@@ -68,6 +68,7 @@ class crawl:
             # Versucht, Chrome Session zu erstellen
             print("Chrome Sitzung wird geöffnet...")
             self.browser = webdriver.Chrome('chromedriver.exe', options=options)
+            self.browser_sec = webdriver.Chrome('chromedriver.exe', options=options)
         except:
             # Wenn dies fehlschlägt, gib Info aus
             version = self.get_chrome_version()
@@ -170,7 +171,7 @@ class crawl:
         # In found[] werden alle src gespeichert
         found = []
         
-        # iterat sucht alle <img Tags
+        # iterat sucht alle img Tags
         iterat = 1
         # i ist der Zähler
         i = 1
@@ -179,14 +180,14 @@ class crawl:
         os.mkdir(self.name)
         
         print("\nDownload Files...\n")
-        
+       
         # Solange nicht alle Posts gedownloaded wurden
         while i != self.articels:
             
             try:
                 
                 # Versuche, nächsten img Tag in tag zu speichern
-                tag = self.browser.find_element_by_xpath("(//img[@class='FFVAD'])[" + str(iterat) + "]").get_attribute('src')
+                tag = self.browser.find_element_by_xpath("(//div[@class='v1Nh3 kIKUG  _bz0w'])[" + str(iterat) + "]").find_element_by_tag_name("a").get_attribute('href')
                 
                 # Wenn dieser Tag noch nicht in found ist
                 if tag not in found:
@@ -195,11 +196,16 @@ class crawl:
                     found.append(tag)
                     
                     # Downloade Bild
-                    r = requests.get(tag)
-                    des = self.name + "/" + str(i) + ".jpg"
-                    with open(des, 'wb') as f:
-                        f.write(r.content)
-
+                    img = self.get_def_post(self.browser.find_element_by_xpath("(//div[@class='v1Nh3 kIKUG  _bz0w'])[" + str(iterat) + "]").find_element_by_tag_name("a").get_attribute('href'))
+                    
+                    c = 1
+                    for aC in img:
+                        r = requests.get(aC[0])
+                        des = self.name + "/" + str(i) + "_" + str(c) + "." + aC[1]
+                        c = c + 1
+                        with open(des, 'wb') as f:
+                            f.write(r.content)
+                    
                     # Gib Meldung aus
                     print("[", i, "/", self.articels - 1, "]")
                     
@@ -223,7 +229,87 @@ class crawl:
             iterat = iterat + 1
             #i wird erhöht
             i = i + 1
+    
+    def get_def_post(self, link):
+        self.erg = []
         
+        i = 1
+        while 0 == 0:
+            self.browser_sec.get(link)
+            
+            sleep(1)
+            
+            self.try_post('video')
+            
+            self.browser_sec.get(link)
+            
+            self.try_post('img')
+            
+            return self.erg
+            break;
+            
+    def try_post(self, ver):
+        
+        iterat = 1
+        if ver == 'video':
+        
+            while 0 == 0:
+                
+                try_b = 0
+                try:
+                    
+                    # Versuche, nächsten img Tag in tag zu speichern
+                    tag = self.browser_sec.find_element_by_xpath("(//video[@class='tWeCl'])[" + str(iterat) + "]").get_attribute('src')
+                    
+                    # Wenn dieser Tag noch nicht in found ist
+                    if not any(tag in sublist for sublist in self.erg):
+                        
+                        # Speichere tag in found
+                        self.erg.append([tag, 'mp4'])
+                    
+                except:
+                    try_b = 1
+                    iterat = 1
+                
+                if try_b == 1:
+                    try:
+                        self.browser_sec.find_element_by_xpath("(//div[@class='    coreSpriteRightChevron  '])[1]").click()
+                    except:
+                        return self.erg
+                        break
+                
+                iterat = iterat + 1
+        
+        else:
+            
+            while 0 == 0:
+                
+                try_b = 0
+                try:
+                    
+                    # Versuche, nächsten img Tag in tag zu speichern
+                    tag = self.browser_sec.find_element_by_xpath("(//img[@class='FFVAD'])[" + str(iterat) + "]").get_attribute('src')
+                    
+                    # Wenn dieser Tag noch nicht in found ist
+                    if not any(tag in sublist for sublist in self.erg):
+                        # Speichere tag in found
+                        
+                        self.erg.append([tag, 'jpg'])
+                    
+                except:
+                    try_b = 1
+                    iterat = 1
+                
+                if try_b == 1:
+                    try:
+                        self.browser_sec.find_element_by_xpath("(//div[@class='    coreSpriteRightChevron  '])[1]").click()
+                        
+                    except:
+                        return self.erg
+                        break
+                
+                iterat = iterat + 1
+    
     def get_articels(self):
         # Die Anzahl der Artikel wird ermittelt 
         
@@ -243,5 +329,5 @@ class crawl:
         # Anzahl wird für while schleife um 1 erhöht
         return int(num_articels) + 1
         
-c = crawl('USERNAME', 'PASSWORD', 'https://instagram.com/ACCOUNTNAME')
+c = crawl('USERNAME', 'PASSWORD', 'https://www.instagram.com/ACCOUNTNAME')
 c.get_post()
