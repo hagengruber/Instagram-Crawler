@@ -165,6 +165,10 @@ class crawl:
         # Der Name des Accounts wird gespeichert
         self.name = self.browser.find_element_by_xpath("(//h2[@class='_7UhW9       fKFbl yUEEX   KV-D4            fDxYl     '])").get_attribute('innerHTML')
         
+        self.follower = self.browser.find_element_by_xpath("(//span[@class='g47SY '])[2]").get_attribute('innerHTML')
+        
+        self.following = self.browser.find_element_by_xpath("(//span[@class='g47SY '])[3]").get_attribute('innerHTML')
+        
         # Die Anzahl der Artikel
         self.articels = self.get_articels()
 
@@ -206,8 +210,20 @@ class crawl:
                         with open(des, 'wb') as f:
                             f.write(r.content)
                     
+                    os.system("cls")
+                    
                     # Gib Meldung aus
-                    print("[", i, "/", self.articels - 1, "]")
+                    print("###############################################")
+                    print("#                                             #")
+                    print(self.p_header(self.name))
+                    print("#                                             #")
+                    print("#            " + self.follower + "         " + self.following + "          ")
+                    print("#                                             #")
+                    print("###############################################")
+                    print("#                                             #")
+                    print("# Download Success: [", i, "/", self.articels - 1, "]               #")
+                    print("#                                             #")
+                    print("###############################################")
                     
                 else:
                     # Wenn tag schon in found ist soll i nicht erhöht werden, da kein img tag gefunden wurde
@@ -310,6 +326,9 @@ class crawl:
                 
                 iterat = iterat + 1
     
+    
+    
+    
     def get_articels(self):
         # Die Anzahl der Artikel wird ermittelt 
         
@@ -329,5 +348,20 @@ class crawl:
         # Anzahl wird für while schleife um 1 erhöht
         return int(num_articels) + 1
         
-c = crawl('USERNAME', 'PASSWORD', 'https://www.instagram.com/ACCOUNTNAME')
-c.get_post()
+    
+    
+    
+    def p_header(self, name):
+       
+        lenWidth = 29 - len(name)
+        
+        header = "#"
+        for i in range(14):
+            header = header + " "
+        
+        header = header + " " + name + " "
+        
+        for i in range(lenWidth):
+            header = header + " "
+        
+        return header + "#"

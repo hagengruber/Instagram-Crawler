@@ -49,11 +49,12 @@
 			
 			<h1> Ziele </h1>
 			
-			<p> Die Klasse... </p>
+			<p> Der Instagram-Crawler... </p>
 			
 			<ul>
 				
-				<li>  </li>
+				<li> kann sich ohne API Account auf Instagram authentifizieren </li>
+				<li> kann öffnetliche, als auch priavte Beiträge und Storys downloaden </li>
 				
 			</ul>
 
@@ -63,16 +64,32 @@
 			
 			<ul>
 				
-				<li> einen Instagram Account </li>
+				<li> einen normalen Instagram Account </li>
 				<li> Google Chrome </li>
-				<li> den dazu passenden Google Chrome Treiber </li>
+				<li> den dazu passenden <a href="https://chromedriver.chromium.org/downloads" target="_blank">Google Chrome Treiber</a> </li>
 				<li> das Python Paket Selemium </li>
 				
 			</ul>
 
 			<h1> Installation und Verwendung </h1>
-			
-				...
+				
+				<p> Die Verwendung des Instagram-Crawler ist ziemlich simpel: </p>
+				
+				<ul>
+					
+					<li> Kopiere die Datei 'instagram-crawler.py' und den passenden <a href="https://chromedriver.chromium.org/downloads" target="_blank">Google Chrome Treiber</a> in ein beliebiges Verzeichnis </li>
+					<li> Erstelle wie folgt ein Objekt und rufe danach die Funktion 'get_post()' auf </li>
+					
+				</ul>
+				
+				<div class="code">
+
+					<p> c = crawl('USERNAME', 'PASSWORD', 'https://www.instagram.com/ACCOUNTNAME') </p>
+					<p> c.get_post() </p>
+					
+				</div>
+				
+				<p> Danach werden alle Beiträge und Storys in ein mit dem Usernamen erstelltes Verzeichnis kopiert </p>
 
 		</section>
 
