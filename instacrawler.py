@@ -88,7 +88,18 @@ class crawl:
         if erg == 1:
             print('Benutzername oder Passwort waren falsch...')
             quit()
-            
+        
+        self.browser_sec.get('https://www.instagram.com/accounts/login/')
+        
+        sleep(1)
+        
+        # Füllt Felder aus
+        self.browser_sec.find_element_by_name('username').send_keys(self.username)
+        self.browser_sec.find_element_by_name('password').send_keys(self.password)
+        self.browser_sec.find_element_by_name('password').send_keys(Keys.ENTER)
+        
+        sleep(3)
+        
         print("Anmeldung erfolgreich")
     
     
@@ -251,32 +262,27 @@ class crawl:
         # Ergebnis wird in self.erg gespeichert
         self.erg = []
         
-        # Unendlich Schleife
-        # Wird abgebrochen, sobald alle Beiträge gespeichert worden sind
-        while 0 == 0:
+        # Serienbild wird aufgerufen
+        self.browser_sec.get(link)
         
-            # Serienbild wird aufgerufen
-            self.browser_sec.get(link)
-            
-            sleep(1)
-            
-            # Prüft, ob Videos im Serienpost existiert
-            # Wenn ja, werden dieses in self.erg gespeichert
-            self.try_post('video')
-            
-            # Beitrag wird erneut aufgerufen
-            self.browser_sec.get(link)
-            
-            # Prüft, ob Bilder im Serienpost existiert
-            # Wenn ja, wird dieses in self.erg gespeichert
-            self.try_post('img')
-            
-            return self.erg
-            break;
-            
-            
-            
-            
+        sleep(1)
+        
+        # Prüft, ob Videos im Serienpost existiert
+        # Wenn ja, werden dieses in self.erg gespeichert
+        self.try_post('video')
+        
+        # Beitrag wird erneut aufgerufen
+        self.browser_sec.get(link)
+        
+        # Prüft, ob Bilder im Serienpost existiert
+        # Wenn ja, wird dieses in self.erg gespeichert
+        self.try_post('img')
+        
+        return self.erg
+    
+    
+    
+    
     def try_post(self, ver):
     # Speichert Bilder und Videos in self.erg
         
@@ -323,6 +329,7 @@ class crawl:
         else:
             
             # Gleiches Prinzip wie oben
+            self.browser_sec.execute_script('document.getElementsByClassName("Z666a")[0].innerHTML=""')
             while 0 == 0:
                 
                 try_b = 0
@@ -372,7 +379,7 @@ class crawl:
         # Gibt Anzahl zurück
         # Anzahl wird für while schleife um 1 erhöht
         return int(num_articels) + 1
-        
+    
     
     
     
