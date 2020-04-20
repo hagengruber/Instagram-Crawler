@@ -26,6 +26,7 @@ class crawl:
         self.login()
         self.get_site()
         self.get_posts()
+        self.get_story()
     
     
     
@@ -35,9 +36,9 @@ class crawl:
         
         # Window ist disabled
         options = webdriver.ChromeOptions()
-        options.add_argument('headless')
-        options.add_argument("disable-gpu")
-        options.add_argument("--log-level=3")
+        #options.add_argument('headless')
+        #options.add_argument("disable-gpu")
+        #options.add_argument("--log-level=3")
         
         try:
             # Versucht, Chrome Session zu erstellen
@@ -147,9 +148,18 @@ class crawl:
 
     def get_posts(self):
         # Downloaded alle Posts
+        # ToDo: Warten, bis h2 verfügbar ist
+        sleep(3)
         
-        # Der Name des Accounts wird gespeichert
-        self.name = self.browser.find_element_by_xpath("(//h2[@class='_7UhW9       fKFbl yUEEX   KV-D4            fDxYl     '])").get_attribute('innerHTML')
+        try:
+            
+            # Der Name des Accounts wird gespeichert
+            self.name = self.browser.find_element_by_xpath("(//h2[@class='_7UhW9       fKFbl yUEEX   KV-D4            fDxYl     '])").get_attribute('innerHTML')
+        
+        except:
+        
+            # Der Name des Accounts wird gespeichert
+            self.name = self.browser.find_element_by_xpath("(//h1[@class='_7UhW9       fKFbl yUEEX   KV-D4            fDxYl     '])").get_attribute('innerHTML')
         
         # Die Anzahl der Abonnenten werden gespeichert
         self.follower = self.browser.find_element_by_xpath("(//span[@class='g47SY '])[2]").get_attribute('innerHTML')
@@ -230,7 +240,6 @@ class crawl:
                     print("#                                             #")
                     print("# Download Success: [", i, "/", self.articels - 1, "]               #")
                     print("#                                             #")
-                    print("###############################################")
                     
                 else:
                     # Wenn tag schon in found ist soll i nicht erhöht werden, da kein div/a tag gefunden wurde
@@ -381,6 +390,117 @@ class crawl:
         return int(num_articels) + 1
     
     
+    
+    def get_story(self):
+        
+        self.erg_storys = []
+        self.browser.get(self.account)
+        sleep(3)
+        
+        try:
+            self.browser.find_element_by_xpath("(//div[@class='RR-M- h5uC0'])[1]").click()
+        except:
+            print("Keine Storys vorhanden")
+            quit()
+        
+        self.browser.find_element_by_xpath("(//img[@class='_6q-tv'])[1]").click()
+        
+        self.load_story()
+        
+        stop = 0
+        count = 1
+        
+        while stop == 0:
+            
+            self.try_get_story()
+            
+            try:
+                self.browser.find_element_by_xpath("(//div[@class='coreSpriteRightChevron'])[1]").click()
+                print("# Crawl Story: ",count,"                             #")
+                count += 1
+                sleep(1)
+            except:
+                stop = 1
+        
+        self.download_storys(count-1)
+    
+    
+    
+    def download_storys(self, count):
+        
+        print("#                                             #")
+        
+        del self.erg_storys[-1]
+        img = self.erg_storys
+        
+        os.mkdir(self.name + "/" + self.name + "_Storys")
+        i = 0
+        
+        # Downloaded alle Bikder
+        for aC in img:
+            # Holt im Array aC den 0 Index
+            # 0 -> Link
+            # 1 -> Typ (jpg/mp4)
+            print("# Download Story: [",i+1,"/",count,"]                   #")
+            r = requests.get(aC[0])
+            # In des wird der Name des Bildes gespeichert
+            des = self.name + "/" + self.name + "_Storys/" + str(i) + "." + aC[1]
+            
+            # Bild wird gespeichert
+            with open(des, 'wb') as f:
+                f.write(r.content)
+            
+            i += 1
+    
+        print("###############################################")
+    
+    def load_story(self):
+    
+        while 0 == 0:
+            
+            try:
+                self.browser.find_element_by_xpath("(//span[@class='Szr5J'])[1]")
+                return 0
+            except:
+                sleep(1)
+    
+    
+    
+    
+    def try_get_story(self):
+        
+        while 0 == 0:
+            
+            found = self.story_video()
+            
+            if found == 1:
+                break;
+                
+            found = self.story_img()
+
+            if found == 1:
+                break
+    
+    
+    
+    def story_video(self):
+        
+        try:
+            self.erg_storys.append([self.browser.find_element_by_xpath("(//source)[1]").get_attribute('src'), 'mp4'])
+            return 1
+        except:
+            return 0
+    
+    
+    
+    
+    def story_img(self):
+    
+        try:
+            self.erg_storys.append([self.browser.find_element_by_xpath("(//img)[2]").get_attribute('src'), 'jpg'])
+            return 1
+        except:
+            return 0
     
     
     def p_header(self, name):
