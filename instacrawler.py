@@ -1,6 +1,7 @@
 from time import sleep
 from win32com.client import Dispatch
 import os
+from copy import copy
 
 # Import eigene Module
 
@@ -85,7 +86,9 @@ class crawl:
         
         # Erzeugt zweites Login Objekt
         # Wenn erster Login erfolgreich war, ist keine Prüfung mehr nötig
-        self.browser_sec = l.login(self.browser_sec, self.username, self.password)
+        self.browser_sec = l.copy()
+        self.browser.get("https://youtube.com")
+        self.browser_sec.get("https://google.de")
         
         print("Anmeldung war erfolgreich")
     

@@ -15,8 +15,9 @@ class session:
         
         try:
             # Versucht, Chrome Session zu erstellen
-            browser = webdriver.Chrome('chromedriver.exe', options=options)
-            return browser
+            self.browser = webdriver.Chrome('chromedriver.exe', options=options)
+            return self.browser
+            
         except:
             # Wenn dies fehlschlägt, gib Info aus
            

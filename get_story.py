@@ -125,19 +125,24 @@ class get_story:
         print("###############################################")
     
     def load_story(self):
-    
+        # Wartet.bis Story geladen ist
+        
         while 0 == 0:
             
             try:
+            
+                # Prüft, ob span Tag existiert
                 self.browser.find_element_by_xpath("(//span[@class='Szr5J'])[1]")
                 return 0
             except:
+                # Wenn nicht, warte
                 sleep(1)
     
     
     
     
     def try_get_story(self):
+        # Speichert Storys in self.erg_storys[]
         
         while 0 == 0:
             

@@ -34,7 +34,13 @@ class login:
             return 1
             
         return self.browser
+    
+    
+    
+    
+    def copy(self):
         
+        return self.browser
     
     
     

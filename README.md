@@ -1,6 +1,6 @@
 # Instagram-Crawler
 Liest nach Anmeldung Benutzerkonten aus
-<br><a href="https://implod3.github.io/Instagram-Crawler" target="_blank"> View Github Page </a>
+<br><a href="https://hagengruber.github.io/Instagram-Crawler" target="_blank"> View Github Page </a>
 
 ## Voraussetzungen
 
